@@ -1,0 +1,76 @@
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  firstName String
+  lastName String
+  email String @unique
+  passwordHash String
+  reptiles Reptile[]
+  schedules Schedule[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Reptile {
+  id Int @id @default(autoincrement())
+  user User @relation(fields: [userId], references: [id])
+  userId Int
+  species String
+  name String
+  sex String
+  feedings Feeding[]
+  husbandryRecords HusbandryRecord[]
+  schedules Schedule[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Feeding {
+  id Int @id @default(autoincrement())
+  reptile Reptile @relation(fields: [reptileId], references: [id], onDelete: Cascade)
+  reptileId Int
+  foodItem String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model HusbandryRecord {
+  id Int @id @default(autoincrement())
+  reptile Reptile @relation(fields: [reptileId], references: [id], onDelete: Cascade)
+  reptileId Int
+  length Float
+  weight Float
+  temperature Float
+  humidity Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Schedule {
+  id Int @id @default(autoincrement())
+  reptile Reptile @relation(fields: [reptileId], references: [id], onDelete: Cascade)
+  reptileId Int
+  user User @relation(fields: [userId], references: [id])
+  userId Int
+  type String
+  description String
+  monday Boolean
+  tuesday Boolean
+  wednesday Boolean
+  thursday Boolean
+  friday Boolean
+  saturday Boolean
+  sunday Boolean
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
