@@ -37,7 +37,7 @@ export const createUser = (client: PrismaClient): RequestHandler => async (req, 
   }, process.env.ENCRYPTION_KEY!!, {
     expiresIn: '15m'
   });
-  res.json({ user, token });
+  res.json({ token });
   return;
 }
 
@@ -48,7 +48,7 @@ type LoginBody = {
   
 // Log in
 export const logIn = (client: PrismaClient): RequestHandler => async (req, res) => {
-  const { email, password } = req.body as LoginBody;
+  const { email, password } = req.query as LoginBody;
   const user = await client.user.findFirst({
     where: { email },
     select: { id: true, passwordHash: true},
@@ -65,10 +65,7 @@ export const logIn = (client: PrismaClient): RequestHandler => async (req, res) 
   }, process.env.ENCRYPTION_KEY!!, {
     expiresIn: '30m'
   });
-  res.json({
-    user,
-    token
-  });
+  res.json({ token });
   return;
 }
   
@@ -88,7 +85,7 @@ export const listUserSchedules = (client: PrismaClient): RequestHandler => async
   res.json({ records });
   return;
 }
-  
+
 // Get Current user.
 export const getMe = (client: PrismaClient): RequestHandler => async (req: RequestWithJWTBody, res) => {
   const userId = req.jwtBody?.userId;
@@ -100,7 +97,7 @@ export const getMe = (client: PrismaClient): RequestHandler => async (req: Reque
       id: userId
     }
   });
-  res.json({ user });
+  res.json({ userId });
   return;
 }
   

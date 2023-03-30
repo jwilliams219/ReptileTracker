@@ -22,7 +22,7 @@ const authentication: RequestHandler = async (req: RequestWithJWTBody, res, next
         const jwtBody = jwt.verify(token || '', process.env.ENCRYPTION_KEY!!) as jwtBody;
         req.jwtBody = jwtBody;
     } catch (error) {
-        console.log("token failed validation");
+        //console.log("token failed validation");
     } finally {
         next();
     }

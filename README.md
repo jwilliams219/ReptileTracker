@@ -1,3 +1,6 @@
+### Reptile Tracker 
+The Reptile Tracker app runs on 2 servers. Server in root, and client in frontend.
+
 
 ### Install the dependencies
 
@@ -22,6 +25,9 @@ yarn db:migrate
 ```
 
 ### Running the server
+Client Side: Navigate within frontend directory before running.
+Server Side: Stay within root directory. 
+
 Start the server by running:
 
 With yarn
@@ -32,6 +38,11 @@ yarn dev
 With npm
 ```bash
 npm run dev
+```
+
+Access the app through 
+```
+localhost:5173
 ```
 
 ## Production

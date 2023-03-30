@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import bodyParser from 'body-parser';
 import cookieParser from "cookie-parser";
 import { userController, reptileController } from "./controller";
+import cors from "cors";
 
 const client = new PrismaClient();
 const app = express();
@@ -10,6 +11,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
 
 userController(app, client);
 reptileController(app, client);

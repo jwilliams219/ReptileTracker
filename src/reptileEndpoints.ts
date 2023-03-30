@@ -31,7 +31,7 @@ export const createReptile = (client: PrismaClient): RequestHandler =>
 
 // Delete a reptile.
 export const deleteReptile = (client: PrismaClient): RequestHandler => async (req: RequestWithJWTBody, res) => {
-  const reptileId = Number(req.body.reptileId);
+  const reptileId = Number(req.query.reptileId);
   if (!reptileId) {
     return res.status(400).json({message: "Error identifying reptile"});
   }
@@ -108,11 +108,10 @@ export const createFeeding = (client: PrismaClient): RequestHandler => async (re
 
 // List all the feedings for a reptile.
 export const listFeedings = (client: PrismaClient): RequestHandler => async (req: RequestWithJWTBody, res) => {
-  let reptileId = req.body?.reptileId;
+  const reptileId = Number(req.query.reptileId);
   if (!reptileId) {
     return res.status(400).json({ message: "Missing Reptile Data"});
   }
-  reptileId = Number(reptileId);
   const feedings = await client.feeding.findMany({
     where: {
       reptileId: {
@@ -158,11 +157,10 @@ export const createHusbandryRecord = (client: PrismaClient): RequestHandler => a
 
 // List all the husbandry records for a reptile.
 export const listHusbandryRecords = (client: PrismaClient): RequestHandler => async (req: RequestWithJWTBody, res) => {
-  let reptileId = req.body?.reptileId;
+  const reptileId = Number(req.query.reptileId);
   if (!reptileId) {
     return res.status(400).json({ message: "Missing Reptile Data"});
   }
-  reptileId = Number(reptileId);
   const records = await client.husbandryRecord.findMany({
     where: {
       reptileId: {
@@ -191,7 +189,7 @@ type Schedule = {
 // Create a schedule for a reptile.
 export const createSchedule = (client: PrismaClient): RequestHandler => async (req: RequestWithJWTBody, res) => {
   let { reptileId, userId, type, description, monday, tuesday, wednesday, thursday, friday, saturday, sunday } = req.body as Schedule;
-  if (!reptileId || !userId || !type || !description || !monday || !tuesday || !wednesday || ! thursday || !friday || !saturday || !sunday) {
+  if (!reptileId || !userId || !type || !(monday || tuesday || wednesday || thursday || friday || saturday || sunday)) {
     return res.status(400).json({ message: "Missing Data"});
   }
   reptileId = Number(reptileId);
@@ -224,11 +222,10 @@ export const createSchedule = (client: PrismaClient): RequestHandler => async (r
 
 // List all the schedules for a reptile.
 export const listReptileSchedules = (client: PrismaClient): RequestHandler => async (req: RequestWithJWTBody, res) => {
-  let reptileId = req.body?.reptileId;
+  const reptileId = Number(req.query.reptileId);
   if (!reptileId) {
     return res.status(400).json({ message: "Missing Reptile Data"});
   }
-  reptileId = Number(reptileId);
   const schedule = await client.schedule.findMany({
     where: {
       reptileId: {
